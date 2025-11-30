@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/galleryFragment">
+
+    <!-- 相册页Fragment -->
+    <fragment
+        android:id="@+id/galleryFragment"
+        android:name="com.example.myapplication.GenerallyFragment"
+        android:label="GenerallyFragment"
+        tools:layout="@layout/fragment_generally" />
+
+    <!-- 编辑页Fragment -->
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.myapplication.EditFragment"
+        android:label="EditFragment"
+        tools:layout="@layout/fragment_edit" />
+
+    <!-- 定义跳转动作 -->
+    <action
+        android:id="@+id/action_galleryFragment_to_editFragment"
+        app:destination="@id/editFragment" />
+
+</navigation>

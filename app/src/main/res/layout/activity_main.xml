@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#F5F5F5"
+    android:padding="40dp">
+
+    <!-- 应用标题 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Photo Editor"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#2196F3"
+        android:layout_marginBottom="60dp" />
+
+    <!-- 进入相册按钮 -->
+    <Button
+        android:id="@+id/btn_gallery"
+    android:layout_width="250dp"
+    android:layout_height="60dp"
+    android:text="进入相册"
+    android:textSize="18sp"
+    android:background="#2196F3"
+    android:textColor="#FFFFFF"
+    android:layout_marginBottom="30dp" />
+
+    <!-- 开发者信息按钮 -->
+    <Button
+        android:id="@+id/btn_developer"
+    android:layout_width="250dp"
+    android:layout_height="60dp"
+    android:text="开发者信息"
+    android:textSize="18sp"
+    android:background="#FF9800"
+    android:textColor="#FFFFFF" />
+
+</LinearLayout>
