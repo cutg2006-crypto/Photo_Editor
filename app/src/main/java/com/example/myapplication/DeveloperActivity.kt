@@ -9,9 +9,10 @@ class DeveloperActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_developer)
 
-        // 设置Toolbar
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "开发者信息"
+        // 【新增代码】隐藏系统导航栏（ActionBar）
+        supportActionBar?.hide()
+
+        // 移除了原有的设置 Toolbar 代码，只保留隐藏
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -12,9 +12,12 @@ class GalleryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gallery)
 
-        // 设置Toolbar
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "相册"
+        // 【修改点 A】隐藏系统 ActionBar
+        supportActionBar?.hide()
+
+        // 【或移除以下代码】如果不想设置任何Toolbar
+        // supportActionBar?.setDisplayHomeAsUpEnabled(true) // 移除这行
+        // supportActionBar?.title = "相册" // 移除这行
 
         // 加载相册Fragment
         if (savedInstanceState == null) {

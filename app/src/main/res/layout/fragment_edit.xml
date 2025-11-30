@@ -4,18 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5">
+    android:background="#FFFFFF">
 
-    <!-- 顶部操作按钮区域 - 删除重置和分享按钮，保留3个 -->
+    <!-- 顶部操作按钮区域 (撤销/重做/保存) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#FFFFFF"
+        android:background="#F5F5F5"
         android:padding="8dp"
         android:elevation="4dp">
 
-        <!-- 撤销按钮 -->
+        <!-- 撤销按钮 (浅灰底黑字) -->
         <Button
             android:id="@+id/btn_undo"
             android:layout_width="0dp"
@@ -23,12 +23,12 @@
             android:layout_weight="1"
             android:text="撤销"
             android:textSize="14sp"
-            android:background="#2196F3"
-            android:textColor="#FFFFFF"
+            android:backgroundTint="#DDDDDD"
+            android:textColor="#000000"
             android:layout_margin="4dp"
             tools:ignore="HardcodedText" />
 
-        <!-- 重做按钮 -->
+        <!-- 重做按钮 (浅灰底黑字) -->
         <Button
             android:id="@+id/btn_redo"
             android:layout_width="0dp"
@@ -36,12 +36,12 @@
             android:layout_weight="1"
             android:text="重做"
             android:textSize="14sp"
-            android:background="#2196F3"
-            android:textColor="#FFFFFF"
+            android:backgroundTint="#DDDDDD"
+            android:textColor="#000000"
             android:layout_margin="4dp"
             tools:ignore="HardcodedText" />
 
-        <!-- 保存按钮 -->
+        <!-- 保存按钮 (浅灰底黑字) -->
         <Button
             android:id="@+id/btn_save"
             android:layout_width="0dp"
@@ -49,8 +49,8 @@
             android:layout_weight="1"
             android:text="保存"
             android:textSize="14sp"
-            android:background="#4CAF50"
-            android:textColor="#FFFFFF"
+            android:backgroundTint="#DDDDDD"
+            android:textColor="#000000"
             android:layout_margin="4dp"
             tools:ignore="HardcodedText" />
 
@@ -64,7 +64,6 @@
         android:padding="16dp"
         android:background="#E0E0E0">
 
-        <!-- 可缩放的图片显示 -->
         <com.example.myapplication.ZoomableImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
@@ -74,14 +73,255 @@
             android:padding="4dp"
             android:contentDescription="编辑中的图片" />
 
+        <com.example.myapplication.GLTextureView
+            android:id="@+id/glTextureView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000000"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="加载中..."
+            android:textSize="18sp"
+            android:textColor="#000000"
+            android:visibility="gone"
+            tools:ignore="HardcodedText" />
+
     </FrameLayout>
+
+    <!-- 翻转子菜单容器 -->
+    <LinearLayout
+        android:id="@+id/flip_menu_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="8dp"
+        android:background="#F5F5F5"
+        android:visibility="gone"
+        android:elevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <!-- 水平翻转 (浅灰底黑字) -->
+            <Button
+                android:id="@+id/btn_flip_horizontal"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:text="水平翻转"
+                android:textSize="16sp"
+                android:backgroundTint="#DDDDDD"
+                android:textColor="#000000"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                tools:ignore="HardcodedText" />
+
+            <!-- 垂直翻转 (浅灰底黑字) -->
+            <Button
+                android:id="@+id/btn_flip_vertical"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:text="垂直翻转"
+                android:textSize="16sp"
+                android:backgroundTint="#DDDDDD"
+                android:textColor="#000000"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+
+            <!-- 翻转取消 (透明底，改为红色文字) -->
+            <Button
+                android:id="@+id/btn_flip_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="取消"
+                android:textSize="14sp"
+                android:backgroundTint="@android:color/transparent"
+                android:textColor="#FF5722"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                tools:ignore="HardcodedText" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <!-- 翻转确认 (透明底，改为绿色文字) -->
+            <Button
+                android:id="@+id/btn_flip_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="确认"
+                android:textSize="14sp"
+                android:backgroundTint="@android:color/transparent"
+                android:textColor="#4CAF50"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 滤镜子菜单容器 -->
+    <LinearLayout
+        android:id="@+id/filter_menu_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="8dp"
+        android:background="#F5F5F5"
+        android:visibility="gone"
+        android:elevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <!-- 滤镜按钮 1: 灰度 (浅灰底黑字) -->
+            <Button
+                android:id="@+id/btn_filter_grayscale"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="灰度"
+                android:textSize="14sp"
+                android:backgroundTint="#DDDDDD"
+                android:textColor="#000000"
+                android:layout_margin="4dp"
+                android:tag="1"
+                tools:ignore="HardcodedText" />
+
+            <!-- 滤镜按钮 2: 复古 (浅灰底黑字) -->
+            <Button
+                android:id="@+id/btn_filter_sepia"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="复古"
+                android:textSize="14sp"
+                android:backgroundTint="#DDDDDD"
+                android:textColor="#000000"
+                android:layout_margin="4dp"
+                android:tag="2"
+                tools:ignore="HardcodedText" />
+
+            <!-- 滤镜按钮 3: 饱和度 (浅灰底黑字) -->
+            <Button
+                android:id="@+id/btn_filter_saturation"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="饱和度"
+                android:textSize="14sp"
+                android:backgroundTint="#DDDDDD"
+                android:textColor="#000000"
+                android:layout_margin="4dp"
+                android:tag="3"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+
+            <!-- 滤镜取消 (透明底，红色文字) -->
+            <Button
+                android:id="@+id/btn_filter_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="取消"
+                android:textSize="14sp"
+                android:backgroundTint="@android:color/transparent"
+                android:textColor="#FF5722"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                tools:ignore="HardcodedText" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
+
+                <TextView
+                    android:id="@+id/tv_filter_intensity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="强度: 0%"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_horizontal" />
+
+                <SeekBar
+                    android:id="@+id/sb_filter_intensity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="0"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:progressTint="#2196F3"
+                    android:thumbTint="#2196F3" />
+
+            </LinearLayout>
+
+            <!-- 滤镜确认 (透明底，绿色文字) -->
+            <Button
+                android:id="@+id/btn_filter_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="确认"
+                android:textSize="14sp"
+                android:backgroundTint="@android:color/transparent"
+                android:textColor="#4CAF50"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
 
     <!-- 功能选项卡区域 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#FFFFFF"
+        android:background="#F5F5F5"
         android:elevation="4dp">
 
         <!-- 功能选项卡标题 -->
@@ -91,33 +331,19 @@
             android:text="编辑功能"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="#333333"
+            android:textColor="#000000"
             android:gravity="center"
             android:padding="8dp"
-            android:background="#F5F5F5"
+            android:background="#E0E0E0"
             tools:ignore="HardcodedText" />
 
-        <!-- 功能按钮 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="8dp">
 
-            <!-- 裁剪按钮 -->
-            <Button
-                android:id="@+id/btn_crop"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:text="裁剪"
-                android:textSize="14sp"
-                android:background="#9C27B0"
-                android:textColor="#FFFFFF"
-                android:layout_margin="4dp"
-                tools:ignore="HardcodedText" />
-
-            <!-- 滤镜按钮 -->
+            <!-- 滤镜按钮 (浅灰底黑字) -->
             <Button
                 android:id="@+id/btn_filter"
                 android:layout_width="0dp"
@@ -125,25 +351,25 @@
                 android:layout_weight="1"
                 android:text="滤镜"
                 android:textSize="14sp"
-                android:background="#673AB7"
-                android:textColor="#FFFFFF"
+                android:backgroundTint="#DDDDDD"
+                android:textColor="#000000"
                 android:layout_margin="4dp"
                 tools:ignore="HardcodedText" />
 
-            <!-- 调整按钮 -->
+            <!-- 翻转按钮 (浅灰底黑字) -->
             <Button
                 android:id="@+id/btn_adjust"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="调整"
+                android:text="翻转"
                 android:textSize="14sp"
-                android:background="#3F51B5"
-                android:textColor="#FFFFFF"
+                android:backgroundTint="#DDDDDD"
+                android:textColor="#000000"
                 android:layout_margin="4dp"
                 tools:ignore="HardcodedText" />
 
-            <!-- 特效按钮 -->
+            <!-- 特效按钮 (浅灰底黑字) -->
             <Button
                 android:id="@+id/btn_effect"
                 android:layout_width="0dp"
@@ -151,8 +377,8 @@
                 android:layout_weight="1"
                 android:text="特效"
                 android:textSize="14sp"
-                android:background="#2196F3"
-                android:textColor="#FFFFFF"
+                android:backgroundTint="#DDDDDD"
+                android:textColor="#000000"
                 android:layout_margin="4dp"
                 tools:ignore="HardcodedText" />
 
@@ -165,10 +391,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#FFFFFF"
+        android:background="#F5F5F5"
         android:padding="8dp">
 
-        <!-- 返回相册页按钮 -->
+        <!-- 返回相册页按钮 (浅灰底黑字) -->
         <Button
             android:id="@+id/btn_back"
             android:layout_width="0dp"
@@ -176,12 +402,12 @@
             android:layout_weight="1"
             android:text="返回相册页"
             android:textSize="16sp"
-            android:background="#FF5722"
-            android:textColor="#FFFFFF"
+            android:backgroundTint="#DDDDDD"
+            android:textColor="#000000"
             android:layout_margin="4dp"
             tools:ignore="HardcodedText" />
 
-        <!-- 重置图片按钮 -->
+        <!-- 重置图片按钮 (浅灰底黑字) -->
         <Button
             android:id="@+id/btn_reset_image"
             android:layout_width="0dp"
@@ -189,10 +415,34 @@
             android:layout_weight="1"
             android:text="重置图片"
             android:textSize="16sp"
-            android:background="#FF9800"
-            android:textColor="#FFFFFF"
+            android:backgroundTint="#DDDDDD"
+            android:textColor="#000000"
             android:layout_margin="4dp"
             tools:ignore="HardcodedText" />
+
+        <!-- 手势开关 (浅灰底黑字) -->
+        <Button
+            android:id="@+id/btn_gesture_toggle"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:text="手势开关"
+            android:textSize="16sp"
+            android:backgroundTint="#DDDDDD"
+            android:textColor="#000000"
+            android:layout_margin="4dp" />
+
+        <!-- 显示状态 (浅灰底黑字) -->
+        <Button
+            android:id="@+id/btn_show_status"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:text="显示状态"
+            android:textSize="16sp"
+            android:backgroundTint="#DDDDDD"
+            android:textColor="#000000"
+            android:layout_margin="4dp" />
 
     </LinearLayout>
 

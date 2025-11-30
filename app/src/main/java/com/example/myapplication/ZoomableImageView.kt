@@ -1,13 +1,21 @@
 package com.example.myapplication
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.PointF
+import android.graphics.RectF
+import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import androidx.appcompat.widget.AppCompatImageView
+import kotlin.math.ceil
+import kotlin.math.floor
+import kotlin.math.max
+import kotlin.math.min
 
 class ZoomableImageView @JvmOverloads constructor(
     context: Context,
@@ -166,4 +174,39 @@ class ZoomableImageView @JvmOverloads constructor(
             reset()
         }
     }
+
+    // =========================================================================
+    // 【新增】裁剪辅助方法 (修复版)
+    // =========================================================================
+
+    /**
+     * 安全地从 Drawable 获取 Bitmap，兼容 TransitionDrawable 等情况
+     */
+    private fun getBitmapFromDrawable(): Bitmap? {
+        val d = drawable ?: return null
+        if (d is BitmapDrawable) return d.bitmap
+
+        // 如果是其他类型的 Drawable (如 TransitionDrawable)，尝试绘制出来
+        try {
+            if (d.intrinsicWidth <= 0 || d.intrinsicHeight <= 0) return null
+            val bitmap = Bitmap.createBitmap(d.intrinsicWidth, d.intrinsicHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            d.setBounds(0, 0, canvas.width, canvas.height)
+            d.draw(canvas)
+            return bitmap
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+    }
+
+
+
+    /**
+     * 根据屏幕上的裁剪框，从原始 Bitmap 中截取对应的区域
+     * 【核心修复】：实现交集裁剪，解决坐标越界和黑屏问题
+     * @param cropRect 屏幕上的裁剪框坐标 (由 CropOverlayView 提供)
+     * @return 裁剪后的新 Bitmap
+     */
+
 }

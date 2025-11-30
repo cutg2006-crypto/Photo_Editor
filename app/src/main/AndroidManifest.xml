@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- 权限 -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
+
+    <!-- 启用OpenGL ES 2.0 -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -13,28 +18,18 @@
         android:label="Photo Editor"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
 
-        <!-- 主Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- 相册Activity -->
-        <activity android:name=".GalleryActivity" />
-
-        <!-- 开发者信息Activity -->
-        <activity android:name=".DeveloperActivity" />
-
-        <!-- 编辑Activity -->
-        <activity android:name=".EditActivity" />
-
-        <!-- 新增：裁剪Activity -->
-        <activity android:name=".CropActivity" />
-
+        </activity> <!-- 相册Activity -->
+        <activity android:name=".GalleryActivity" /> <!-- 开发者信息Activity -->
+        <activity android:name=".DeveloperActivity" /> <!-- 编辑Activity -->
+        <activity android:name=".EditActivity" /> <!-- 新增：裁剪Activity -->
     </application>
 
 </manifest>
