@@ -26,7 +26,7 @@
 ### **2\. 运行环境要求**
 
 * **最低 SDK 版本：** API 24 (或更高)  
-* **构建工具：** Android Studio Arctic Fox 或更高版本。  
+* **构建工具：** Android Studio  
 * **权限说明：** 基于 GenerallyFragment.kt 中的实现，应用会根据 Android 版本动态请求 **READ\_EXTERNAL\_STORAGE 或 READ\_MEDIA\_IMAGES** 权限。
 
 ## ** 基础项目报告**
